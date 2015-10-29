@@ -1,0 +1,130 @@
+<style type="text/css">
+<!--
+#rechts {
+    float:right;
+    width: 234px;
+    height: 123px;
+    margin-left: 20px;
+    border:1px solid red;
+} 
+-->
+</style>
+  
+<img id="rechts" src="bilder/html-kurs-logo.gif" />
+Hier kommt Text, der das Bild links umfließt und 
+automatisch umgebrochen wird
+
+Hintergrundbilder - wie das Bild in den Hintergrund kommt
+
+Um das Bild in den Hintergrund zu packen, gibt es mehrere Möglichkeiten. Die weit verbreitest Möglichkeit ist, es in der CSS-Datei einen Bereich zu Definieren, der für das komplette HTML-Dokument gilt - also der Tag html bzw. body.
+
+Beispiel: Das Bild wird nun gesetzt und wiederholt sich automatisch. Die Schriftgröße wird als 80% definiert und als Schriftart „Verdana“. Ist die Schriftart „Verdana“ auf dem Computer des späteren Besuchers nicht installiert, dann soll die Schrift Arial und notfalls einfach eine Schrift ohne Serifen genutzt werden. Und zum Schluss wird als Farbe #ff0000 mitgegeben, was nichts anderes ist als Rot.
+html, body {
+  background:url(bilder/html-kurs-logo.gif);
+  font: 80% Verdana, Arial, Verdana, Helvetica, sans-serif;
+  color: #ff0000;
+}
+
+
+Beispiel: Das Bild wird nun links oben (left top) gesetzt und wiederholt sich nicht.
+html, body {
+  background:url(bilder/html-kurs-logo.gif) no-repeat right top;
+}
+
+Beispiel: Das Bild wiederholt sich in der Horizontalen.
+html, body {
+  background:url(bilder/html-kurs-logo.gif) repeat-x;
+}
+
+
+29.12.2008
+
+Bildschirmfüllende Hintergrundgrafik 
+
+Ein häufiges Problem vieler Webmaster: Wie kann eine Hintergrundgrafik unabhängig von der Fenstergröße immer bildschirmfüllend angezeigt werden.
+ Grundsätzliche Antwort: Überhaupt nicht, denn Hintergrundgrafiken lassen sich nicht skalieren.
+ Insofern ist auch - zugegeben - die Überschrift dieses Kapitels irreführend. Aber ich habe sie so gewählt, weil im Internet doch immer wieder nach diesem Begriff gesucht wird. 
+
+Allerdings: Mit Hilfe von CSS lässt sich auch dieses Problem lösen: Wir müssen lediglich dafür sorgen, dass es sich bei der Grafik nicht um eine Hintergrundgrafik, sondern um ein skalierbares Image handelt. Hierzu verwenden wir folgenden Trick: 
+
+Wir definieren einen Div "#hintergrund", welchem wir 100% Höhe und 100% Breite zuweisen. Da sich diese Werte auf html und body beziehen, legen wir ebenso für html und body 100% Höhe und 100% Breite fest. Um Ränder zu vermeiden, setzen wir für html und body margin und padding auf "0". 
+ Damit das "Hintergrundbild" auch bei längerem Inhalt bildschirmfüllend angezeigt wird, weisen wir "html und body" noch ein "overflow: hidden" zu.
+ Den "#hintergrund" positionieren wir relativ mit ebenfalls 100% Breite und 100% Höhe, um den folgenden Content darin entsprechend unterzubringen.
+ Der "#content" soll dagegen bei größerem Inhalt scrollbar sein. Deshalb erhält er ein "overflow: auto".
+ Schließlich sorgen wir noch mit entsprechenden z-Indizes dafür, dass sich #content vor #hintergrund befindet.
+ Daraus ergeben sich folgende CSS-Angaben: 
+
+ 
+ 
+
+html, body {
+ width: 100%;
+ height: 100%;
+ margin: 0;
+ padding: 0;
+ overflow: hidden;
+ }
+
+ #hintergrund {
+ width: 100%;
+ height: 100%;
+ position: relative;
+ z-index: 1;
+ }
+
+ #content {
+ position: absolute;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ z-index: 2;
+ overflow: auto;
+ } 
+
+Im HTML-Quelltext wird nach dem Öffnen von <body> der img-Tag geöffnet, dem wir den zuvor definierten ID "#hintergrund" zuweisen.
+ Damit wird die verwendete Grafik auf jeweils 100% Höhe und 100% Breite skaliert.
+ Dem img-Tag wird als Source die verwendete Hintergrundgrafik zugewiesen; im Beispiel die Grafik "bg1.jpg".
+ Im Anschluss daran folgt unser #content, in den wir beliebigen Inhalt einfügen können. Daraus ergibt sich folgender HTML-Quelltext: 
+
+<body>
+ <img id="hintergrund" src="bg1.jpg" border="0" alt="Hintergrundbild">
+ <div id="content">
+ <h1>Inhalt</h1>
+ </div><!--Ende #content-->
+ </body> 
+
+Als Ergebnis erhalten wir eine skalierte Hintergrundgrafik, die sich allen Bildschirmgrößen anpasst. Indem ihr die Demo öffnet, könnt ihr bei vergrößertem oder verkleinertem Bildschirmfenster testen, dass die Hintergundgrafik stets bildschirmfüllend angezeigt wird. 
+
+
+Hinweise über die Nachteile bildschirmfüllender Grafiken
+
+Die Verwendung der beschriebenen Methode birgt folgende Nachteile, über die man sich im Klaren sein muss: 
+• Durch die Skalierung der Grafik kommt es zwangsläufig zu Verpixelungen. Dadurch wird die Qualität der Grafik negativ beeinträchtigt. 
+•Große Grafiken führen zu einer längeren Ladezeit der entsprechenden Grafiken bzw. der Seiten, bei denen sie verwendet werden.
+• Da jedes Bildschirmfenster ein unterschiedliches Höhen-/Breitenverhältnis aufweisen kann, müssen die Proportionen der verwendeten Grafik in der Anzeige im Verhältnis zur verwendeten Grafik nicht immer stimmen. 
+
+Quelle: 
+ Die Anregung zu dieser Anleitung stammt von Dr. Web . 
+
+nach oben 
+https://wiki.selfhtml.org/wiki/CSS/Eigenschaften/Hintergrundfarben_und_-bilder/background-size
+
+
+-->Gerade in der heutigen Zeit wo immer mehr Besucher über ihre mobilen Geräte online gehen, muss so ein Fehler schnellstmöglich behoben werden. Ich suchte also eine andere Lösung und habe mir dann die background-size Funktion von CSS3 näher angeschaut. Einfach einen globalen (html) Background definieren, ihn zentrieren (center) und fixieren (fixed). Soweit noch keine Neuheit, doch mit background-size: cover; bietet CSS3 den Nutzern die Möglichkeit ein Bild so klein es geht zu skalieren, aber trotzdem das Element vollständig zu füllen. Somit ist es kinderleicht die Background-Grafik immer auf 100% zu strecken, ohne dass sich die Seitenverhältnisse des Hintergrundes ändern:
+
+<style type="text/css">
+html {
+        background: url(http://it-runde.de/dateien/background-fest.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+}
+</style>
+
+http://it-runde.de/7788/hintergrundbild-passt-sich-an-browsergrose-an-css-3
+http://www.webmasterpro.de/coding/article/html-google-maps-in-eigene-webseite-einbinden.html
+http://www.akademie.de/wissen/google-maps-api-version-3/google-maps-private-homepage
+http://tutorialzine.com/2015/01/freebie-5-responsive-footer-templates/
+http://demo.tutorialzine.com/2015/01/freebie-5-responsive-footer-templates/footer-distributed-with-address-and-phones.html
